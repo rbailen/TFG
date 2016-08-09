@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+    
+    <!-- Autenticación desde la tabla USUARIOS de la Base de Datos -->
+   <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource" 
+                                users-by-username-query="select usuario,clave, true from usuarios where usuario=?"
+                                authorities-by-username-query="select usuario, rol from usuarios where usuario=?"
+            />
+        </authentication-provider>
+    </authentication-manager>
+    
+    <http auto-config="true" use-expressions="true">
+        <!-- USUARIOS -->
+        <security:intercept-url pattern="/usuarios/listadoClientes" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/usuarios/altaCliente" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/usuarios/editaCliente/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/usuarios/visualizaCliente/*" access="hasAnyRole('ROLE_USER')" />
+        <security:intercept-url pattern="/usuarios/editar/*" access="hasRole('ROLE_USER')" />
+        <security:intercept-url pattern="/usuarios/borraCliente/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+        
+        <!-- DEPORTES -->
+        <security:intercept-url pattern="/deportes/listadoDeportes" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/deportes/altaDeporte" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/deportes/borraDeporte/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/deportes/editaDeporte/*" access="hasRole('ROLE_ADMIN')" />
+        
+        <!-- COMPETICIONES -->
+        <security:intercept-url pattern="/competiciones/listadoCompeticiones" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/competiciones/altaCompeticion" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/competiciones/borraCompeticion/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/competiciones/editaCompeticion/*" access="hasRole('ROLE_ADMIN')" />
+        
+        <!-- PARTICIPANTES -->
+        <security:intercept-url pattern="/participantes/listadoParticipantes" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/participantes/altaParticipante" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/participantes/borraParticipante/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/participantes/editaParticipante/*" access="hasRole('ROLE_ADMIN')" />
+        
+        <!-- EVENTOS -->
+        <security:intercept-url pattern="/eventos/listadoEventos" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/eventos/altaEvento" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/eventos/borraEvento/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/eventos/editaEvento/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/eventos/visualizaEvento/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/eventos/verEntradasEvento/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+        
+        <!-- ENTRADAS -->
+        <security:intercept-url pattern="/entradas/listadoEntradas" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/entradas/altaEntrada" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/entradas/editaEntrada/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/entradas/venta" access="hasRole('ROLE_ADMIN')" />
+        
+        <!-- COMPRAS -->
+        <security:intercept-url pattern="/compras/listadoCompras" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/compras/visualizaCompra/*" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/compras/visualiza/*" access="hasAnyRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/altaCompra/*" access="hasRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/verCompra/*" access="hasRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/historico/*" access="hasRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/borraCompra/*" access="hasRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/imprimir/*" access="hasRole('ROLE_USER')" />
+        
+        <!-- PAYPAL -->
+        <security:intercept-url pattern="/compras/formularioPrueba" access="hasAnyRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/confirmacionPaypalTest" access="hasAnyRole('ROLE_USER')" />
+        <security:intercept-url pattern="/compras/confirmacionPago/*" access="hasAnyRole('ROLE_USER')" />
+        
+        <security:form-login login-page="/login"
+                             authentication-failure-url="/loginError"
+                             authentication-success-handler-ref="authSuccessHandler"/>
+       
+         <security:logout logout-success-url="/" delete-cookies="true" invalidate-session="true"/>
+         
+    </http> 
+    
+    <beans:bean id="authSuccessHandler" class="es.ujaen.tfg.manejadores.AuthSuccessHandler" />
+    
+    
+
+</beans:beans>

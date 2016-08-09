@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <cache name="usuarios" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+    <cache name="competiciones" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+    <cache name="eventos" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+    <cache name="participantes" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+    <cache name="deportes" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+    <cache name="entradas" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+    <cache name="compras" maxElementsInMemory="10000" eternal="true"
+        overflowToDisk="false" />
+</ehcache>
